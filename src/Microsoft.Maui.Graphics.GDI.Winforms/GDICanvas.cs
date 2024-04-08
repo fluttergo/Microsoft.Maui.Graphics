@@ -11,26 +11,43 @@ namespace Microsoft.Maui.Graphics.GDI
 {
 	public class GDICanvas : AbstractCanvas<GDICanvasState>
 	{
+		public class StateImp:ICanvasStateService<GDICanvasState> {
+			public GDICanvasState CreateNew(object context) {
+				var canvas = (GDICanvas)context;
+				return new GDICanvasState(canvas.Graphics);
+			}
+
+			public GDICanvasState CreateCopy(GDICanvasState prototype) { return new GDICanvasState(prototype); }
+		}
+		public class StringImp:IStringSizeService {
+			public SizeF GetStringSize(string aString, IFont font, float fontSize) {
+				var f = font.ToSystemDrawingFont(fontSize * GDICanvasState.DpiAdjustment);
+				var size = TextRenderer.MeasureText(aString, f);
+				f.Dispose();
+				return new SizeF(size.Width, size.Height);
+			}
+
+			public SizeF GetStringSize(string aString
+			  , IFont                         font
+			  , float                         fontSize
+			  , HorizontalAlignment           aHorizontalAlignment
+			  , VerticalAlignment             aVerticalAlignment
+				) {
+				var f = font.ToSystemDrawingFont(fontSize * GDICanvasState.DpiAdjustment);
+				var size = TextRenderer.MeasureText(aString, f);
+				f.Dispose();
+				return new SizeF(size.Width, size.Height);
+			}
+		}
 		private System.Drawing.Graphics _graphics;
 
 		private Drawing.RectangleF _rect;
 		private global::System.Drawing.Rectangle _rectI;
 
 		public GDICanvas()
-			: base(CreateNewState, CreateStateCopy)
-		{
-		}
+			: base(new StateImp(), new StringImp()) { }
 
-		private static GDICanvasState CreateNewState(object context)
-		{
-			var canvas = (GDICanvas) context;
-			return new GDICanvasState(canvas.Graphics);
-		}
-
-		private static GDICanvasState CreateStateCopy(GDICanvasState prototype)
-		{
-			return new GDICanvasState(prototype);
-		}
+		
 
 		public System.Drawing.Graphics Graphics
 		{
@@ -585,20 +602,5 @@ namespace Microsoft.Maui.Graphics.GDI
 		{
 		}
 
-		public override SizeF GetStringSize(string aString, IFont font, float fontSize)
-		{
-			var f = font.ToSystemDrawingFont(fontSize * GDICanvasState.DpiAdjustment);
-			var size = TextRenderer.MeasureText(aString, f);
-			f.Dispose();
-			return new SizeF(size.Width, size.Height);
-		}
-
-		public override SizeF GetStringSize(string aString, IFont font, float fontSize, HorizontalAlignment aHorizontalAlignment, VerticalAlignment aVerticalAlignment)
-		{
-			var f = font.ToSystemDrawingFont(fontSize * GDICanvasState.DpiAdjustment);
-			var size = TextRenderer.MeasureText(aString, f);
-			f.Dispose();
-			return new SizeF(size.Width, size.Height);
-		}
 	}
 }

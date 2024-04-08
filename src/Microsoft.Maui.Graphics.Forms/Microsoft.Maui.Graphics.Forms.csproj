@@ -1,7 +1,8 @@
 ﻿<Project Sdk="MSBuild.Sdk.Extras">
     <PropertyGroup>
-        <TargetFrameworks>netstandard2.1;netstandard2.0;Xamarin.iOS10;MonoAndroid10.0;Xamarin.Mac20</TargetFrameworks>
         <RootNamespace>Microsoft.Maui.Graphics.Forms</RootNamespace>
+        <TargetFramework>netstandard2.1</TargetFramework>
+        <LangVersion>11</LangVersion>
     </PropertyGroup>
     <PropertyGroup>
         <PackageId>Microsoft.Maui.Graphics.Forms</PackageId>

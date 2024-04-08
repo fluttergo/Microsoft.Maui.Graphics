@@ -160,7 +160,7 @@ namespace Microsoft.Maui.Graphics.Text
 			{
 				var run = runs[i];
 				var end = run.GetEnd();
-
+			
 				if (run.Start < 0 || end > textLength)
 				{
 					var start = Math.Max(run.Start, 0);
@@ -172,15 +172,15 @@ namespace Microsoft.Maui.Graphics.Text
 						runs.RemoveAt(i--);
 				}
 			}
-
+			
 			runs.Sort(AttributedTextRunComparer.Instance);
-
+			
 			// Loop through the runs and join the ones that overlap.
 			IAttributedTextRun previous = null;
 			for (int i = 0; i < runs.Count; i++)
 			{
 				var run = runs[i];
-
+			
 				if (previous != null)
 				{
 					if (previous.IntersectsExactly(run))
@@ -199,7 +199,7 @@ namespace Microsoft.Maui.Graphics.Text
 						runs.Sort(AttributedTextRunComparer.Instance);
 					}
 				}
-
+			
 				previous = run;
 			}
 		}
